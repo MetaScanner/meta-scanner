@@ -1,0 +1,22 @@
+"""
+MetaScanner Application Controller
+
+MetaScanner GUI 애플리케이션의 메인 컨트롤러 역할을 담당하는 클래스이다.
+Tkinter 루트 윈도우를 초기화하고 애플리케이션의 기본 UI 환경을 설정한다.
+
+이 모듈은 주로 다음 역할을 수행한다:
+- 사용자 이벤트(UI 입력) 감지
+- 사용자 요청에 따른 기능 실행
+- core 모듈의 메타데이터 스캔 기능 호출
+- 스캔 결과를 UI에 전달
+
+실제 파일 탐색 및 메타데이터 수집 로직은 core 모듈에서 처리한다.
+"""
+
+import tkinter as tk
+
+class MetaScanner:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Meta Scanner")
+        self.root.geometry("1000x800")
