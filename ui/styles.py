@@ -51,23 +51,19 @@ def setup_styles(root):
     # ==============================
     # Frame Styles
     # ==============================
-
     style.configure("Box.TFrame", background=CARD_COLOR, relief="flat")
 
     # ==============================
     # Button Styles
     # ==============================
-
     style.configure("Primary.TButton", padding=6)
 
     # ==============================
     # Entry Styles
     # ==============================
-
     style.configure("TEntry", padding=4)
 
     # ==============================
     # Combobox Styles
     # ==============================
-
     style.configure("White.TCombobox", padding=3)
