@@ -15,12 +15,16 @@ Tkinter 루트 윈도우 아래에서 전체 화면 구조를 정의하고
 
 from ui.components.scroll_container import ScrollContainer
 from ui.managers.scroll_manager import ScrollManager
-
+from ui.frames.folder_scan_frame import FolderScanFrame
+from ui.frames.file_list_frame import FileListFrame
+from ui import styles
 
 class MainLayout:
     def __init__(self, app):
         self.app = app
         self.root = app.root
+
+        styles.setup_styles(app)
 
         self._build_scroll_container()
         self._build_frames()
@@ -40,9 +44,11 @@ class MainLayout:
     # Content 영역 생성
     # =========================
     def _build_frames(self):
-        # TODO: frame 생성
-        return None
+        self.folder_scan = FolderScanFrame(self.app, self.page_frame)
+        self.folder_scan.frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
 
+        self.file_list = FileListFrame(self.app, self.page_frame)
+        self.file_list.frame.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
     
     # =========================
     # 내부 스크롤 영역 등록
