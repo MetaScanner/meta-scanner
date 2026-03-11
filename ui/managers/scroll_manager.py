@@ -51,6 +51,11 @@ class ScrollManager:
             return
 
     def _scroll_canvas(self, event):
+        first, last = self.canvas.yview()
+
+        if first == 0 and last == 1:
+            return
+
         if event.delta:
             self.canvas.yview_scroll(int(-event.delta / 120), "units")
         elif event.num == 4:
