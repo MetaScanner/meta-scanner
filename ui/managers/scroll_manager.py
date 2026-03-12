@@ -47,15 +47,10 @@ class ScrollManager:
 
             # 아무도 안 받으면 전체 스크롤
             self._scroll_canvas(event)
-        except Exception:
-            return
+        except Exception as e:
+            print("ScrollManager error:", e)
 
     def _scroll_canvas(self, event):
-        first, last = self.canvas.yview()
-
-        if first == 0 and last == 1:
-            return
-
         if event.delta:
             self.canvas.yview_scroll(int(-event.delta / 120), "units")
         elif event.num == 4:
