@@ -62,3 +62,27 @@ class FileListFrame:
         self.empty_label.place(relx=0.5, rely=0.5, anchor="center")
 
         # self.tree.bind("<<TreeviewSelect>>", self._on_tree_select)
+        
+        
+    # 전달받은 파일 목록을 Treeview 테이블에 표시
+    def update_file_list(self, file_list):
+        self.tree.delete(*self.tree.get_children())
+
+        if not file_list:
+            self.empty_label.config(text="선택한 폴더에 표시할 파일이 없습니다.")
+            self.empty_label.place(relx=0.5, rely=0.5, anchor="center")
+            return
+
+        self.empty_label.place_forget()
+
+        for file_info in file_list:
+            self.tree.insert(
+                "",
+                "end",
+                values=(
+                    file_info["name"],
+                    file_info["type"],
+                    file_info["size"],
+                    file_info["modified"],
+                )
+            )
