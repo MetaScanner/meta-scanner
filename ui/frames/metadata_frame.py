@@ -35,7 +35,7 @@ class MetadataFrame:
 
         # 버튼 배치
         self.format_var = tk.StringVar(value="json")
-        format = {"json": "#FFD071",  "csv":  "#139B1E",  "xml":  "#3D7DC5"}
+        format = {"json": "#FAE7C0",  "csv":  "#D8F3DA",  "xml":  "#E5F1FB"}
 
         for fmt, color in format.items():
             rb = tk.Radiobutton(self.format_frame, text=fmt.upper(), value=fmt, variable=self.format_var,

@@ -30,7 +30,6 @@ class MainLayout:
         self._build_scroll_container()
         self._build_frames()
         self._build_scroll_manager()
-        self.root.after(100, self.debug_size)
 
     # =========================
     # 전체 화면 스크롤 설정
