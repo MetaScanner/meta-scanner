@@ -32,10 +32,6 @@ class MainLayout:
         self._build_scroll_manager()
         self.root.after(100, self.debug_size)
 
-    def debug_size(self):
-        print(self.page_frame.winfo_height())
-        print(self.canvas.winfo_height())
-
     # =========================
     # 전체 화면 스크롤 설정
     # =========================
