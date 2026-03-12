@@ -45,12 +45,22 @@ class ScrollContainer:
         )
 
         # scrollregion 자동 갱신
-        self.page_frame.bind(
-            "<Configure>",
-            lambda e: self.canvas.configure(
-                scrollregion=self.canvas.bbox("all")
-            )
-        )
+        def _update_scrollregion(event=None):
+
+            self.canvas.update_idletasks()
+
+            width = self.page_frame.winfo_width()
+            height = self.page_frame.winfo_height()
+
+            canvas_h = self.canvas.winfo_height()
+
+            # canvas보다 작으면 scroll 필요 없음
+            if height <= canvas_h:
+                self.canvas.configure(scrollregion=(0, 0, width, canvas_h))
+            else:
+                self.canvas.configure(scrollregion=(0, 0, width, height))
+
+        self.page_frame.bind("<Configure>", _update_scrollregion)
 
         # 가로폭 동기화
         self.canvas.bind(

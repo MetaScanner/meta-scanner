@@ -62,3 +62,22 @@ class FileListFrame:
         self.empty_label.place(relx=0.5, rely=0.5, anchor="center")
 
         # self.tree.bind("<<TreeviewSelect>>", self._on_tree_select)
+
+    
+    
+    # ===========================
+    # ScrollManager 인터페이스
+    # ===========================
+    def is_inside(self, widget):
+        return self._is_child_of(widget, self.tree_container)
+
+    def scroll(self, event):
+        delta = int(-1 * (event.delta / 120))
+        self.tree.yview_scroll(delta, "units")
+
+    def _is_child_of(self, widget, parent):
+        while widget is not None:
+            if widget == parent:
+                return True
+            widget = widget.master
+        return False

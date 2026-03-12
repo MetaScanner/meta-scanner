@@ -24,6 +24,7 @@ CARD_COLOR = "#FFFFFF"
 TXT_COLOR = "#212529"
 TXT_HOVER_COLOR = "#1A73E8"
 
+BTN_COLOR = "#EEEEEE"
 BTN_HOVER_COLOR = "#E5F1FB"
 
 ACTIVE_BORDER_COLOR = "#2C7BE5"
@@ -61,7 +62,7 @@ def setup_styles(app):
     # Font Styles
     # ==============================
     app.font = tkfont.Font(family="맑은 고딕", size=13)
-    app.label_font = tkfont.Font(family="맑은 고딕", size=10)
+    app.label_font = tkfont.Font(family="맑은 고딕", size=11)
     app.small_font = tkfont.Font(family="맑은 고딕", size=8)
     app.large_font = tkfont.Font(family="맑은 고딕", size=15)
 
@@ -69,15 +70,15 @@ def setup_styles(app):
     # Frame Styles
     # ==============================
     style.configure("TFrame", borderwidth=0, relief="flat")
-    style.configure("BOX.TFrame", background=BG_COLOR, borderwidth=1, relief="solid")
-    # style.configure("TLabelframe", background=BG_COLOR)
-    # style.configure("TLabelframe.Label", background=BG_COLOR, font=app.label_font)
+    style.configure("BOX.TFrame", borderwidth=1, relief="solid")
+    style.configure("TLabelframe")
+    style.configure("TLabelframe.Label", font=app.label_font)
 
 
     # ==============================
     # Button Styles
     # ==============================
-    style.configure("Primary.TButton", padding=6)
+    style.configure("Primary.TButton", font=app.font, padding=6, background=BTN_COLOR, foreground=TXT_COLOR, borderwidth=1, relief="raised")
     style.map("Primary.TButton", background=[("active", BTN_HOVER_COLOR)], bordercolor=[("active", ACTIVE_BORDER_COLOR)])
 
     # ==============================
