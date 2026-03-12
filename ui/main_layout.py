@@ -53,11 +53,15 @@ class MainLayout:
     # Content 영역 생성
     # =========================
     def _build_frames(self):
-        self.folder_scan = FolderScanFrame(self.app, self.page_frame)
-        self.folder_scan.frame.grid(row=0, column=0, sticky="ew", padx=10, pady=10)
-
         self.file_list = FileListFrame(self.app, self.page_frame)
-        self.file_list.frame.grid(row=1, column=0, sticky="ew", padx=10, pady=10)
+        self.file_list.frame.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+
+        self.folder_scan = FolderScanFrame(
+            self.app,
+            self.page_frame,
+            self.file_list
+        )
+        self.folder_scan.frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
     
         self.metadata = MetadataFrame(self.app, self.page_frame)
         self.metadata.frame.grid(row=2, column=0, sticky="ew", padx=10, pady=10)
