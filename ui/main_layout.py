@@ -17,7 +17,6 @@ from ui.components.scroll_container import ScrollContainer
 from ui.managers.scroll_manager import ScrollManager
 from ui.frames.folder_scan_frame import FolderScanFrame
 from ui.frames.file_list_frame import FileListFrame
-from ui.frames.metadata_frame import MetadataFrame
 from ui import styles
 
 class MainLayout:
@@ -40,32 +39,19 @@ class MainLayout:
         self.canvas = self.scroll_container.canvas
 
         self.page_frame.columnconfigure(0, weight=1)
-        self.page_frame.rowconfigure(0, weight=0)
-        self.page_frame.rowconfigure(1, weight=0)
-        self.page_frame.rowconfigure(2, weight=0)
 
     # =========================
     # Content 영역 생성
     # =========================
     def _build_frames(self):
+        self.folder_scan = FolderScanFrame(self.app, self.page_frame)
+        self.folder_scan.frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
+
         self.file_list = FileListFrame(self.app, self.page_frame)
         self.file_list.frame.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
-
-        self.folder_scan = FolderScanFrame(
-            self.app,
-            self.page_frame,
-            self.file_list
-        )
-        self.folder_scan.frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
     
-        self.metadata = MetadataFrame(self.app, self.page_frame)
-        self.metadata.frame.grid(row=2, column=0, sticky="ew", padx=10, pady=10)
-
     # =========================
     # 내부 스크롤 영역 등록
     # =========================
     def _build_scroll_manager(self):
         self.scroll_manager = ScrollManager(self.root, self.canvas)
-
-        self.scroll_manager.register(self.file_list)
-        self.scroll_manager.register(self.metadata)

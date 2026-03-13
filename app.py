@@ -23,3 +23,10 @@ class MetaCollector:
         self.root.geometry("1000x800")
 
         self.layout = MainLayout(self)
+    
+    # =========================
+    # 폴더 선택 이벤트 중재
+    # FolderScanManager → app → FileListManager
+    # =========================
+    def on_folder_selected(self, folder_path: str):
+        self.layout.file_list.manager.load_files(folder_path)

@@ -11,10 +11,9 @@ import tkinter as tk
 from tkinter import ttk
 
 class FolderScanFrame:
-    def __init__(self, app, parent, file_list_frame):
+    def __init__(self, app, parent):
         self.app = app
         self.frame = ttk.Frame(parent)
-        self.file_list_frame = file_list_frame
 
         self.manager = FolderScanManager(self)
 
@@ -38,11 +37,5 @@ class FolderScanFrame:
     # =========================
     def _on_select_folder(self):
         folder = self.manager.select_folder()
-
-        if not folder:
-            return
-
-        self.folder_var.set(folder)
-
-        file_list = self.file_list_frame.manager.get_files_in_folder(folder)
-        self.file_list_frame.update_file_list(file_list)
+        if folder:
+            self.folder_var.set(folder)

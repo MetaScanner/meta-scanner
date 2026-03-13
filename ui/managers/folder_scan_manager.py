@@ -19,4 +19,9 @@ class FolderScanManager:
     # 폴더 선택 다이얼로그
     # =========================
     def select_folder(self):
-        return filedialog.askdirectory()
+        folder = filedialog.askdirectory()
+        
+        if folder:
+            self.frame.app.on_folder_selected(folder)
+ 
+        return folder

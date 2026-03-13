@@ -1,39 +1,46 @@
-import os
-from datetime import datetime
-
+from core.file_scanner import scan_folder
 
 class FileListManager:
     def __init__(self, frame):
         self.frame = frame
-
-    # 선택한 폴더의 파일 목록을 읽어와 리스트로 반환
-    def get_files_in_folder(self, folder_path):
-        file_list = []
-
-        if not folder_path:
-            return file_list
-
-        try:
-            for file_name in os.listdir(folder_path):
-                full_path = os.path.join(folder_path, file_name)
-
-                if os.path.isfile(full_path):
-                    ext = os.path.splitext(file_name)[1]
-                    size = os.path.getsize(full_path)
-                    modified = datetime.fromtimestamp(
-                        os.path.getmtime(full_path)
-                    ).strftime("%Y-%m-%d %H:%M:%S")
-
-                    file_list.append(
-                        {
-                            "name": file_name,
-                            "type": ext if ext else "-",
-                            "size": f"{size:,}",
-                            "modified": modified,
-                        }
-                    )
-
-        except Exception as e:
-            print(f"파일 목록 불러오기 오류: {e}")
-
-        return file_list
+        
+    # =========================
+    # 파일 목록 로드
+    # app으로부터 폴더 경로를 받아 core에서 파일 목록을 가져온 뒤
+    # frame의 treeview에 표시한다.
+    # =========================
+    def load_files(self, folder_path: str):
+        files = scan_folder(folder_path)
+ 
+        # treeview 초기화
+        tree = self.frame.tree
+        tree.delete(*tree.get_children())
+ 
+        if not files:
+            self.frame.empty_label.place(relx=0.5, rely=0.5, anchor="center")
+            return
+ 
+        # 파일이 있으면 안내 문구 숨기기
+        self.frame.empty_label.place_forget()
+ 
+        for file in files:
+            size_str = self._format_size(file["size"])
+            tree.insert("", "end", values=(
+                file["name"],
+                file["ext"],
+                size_str,
+                file["modified"],
+            ))
+ 
+    # =========================
+    # 파일 크기 포맷
+    # =========================
+    def _format_size(self, size: int) -> str:
+        if size < 1024:
+            return f"{size} B"
+        elif size < 1024 ** 2:
+            return f"{size / 1024:.1f} KB"
+        elif size < 1024 ** 3:
+            return f"{size / 1024 ** 2:.1f} MB"
+        else:
+            return f"{size / 1024 ** 3:.1f} GB"
