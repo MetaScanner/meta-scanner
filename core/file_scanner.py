@@ -7,6 +7,8 @@ File Scanner Core
 
 import os
 from datetime import datetime
+import win32com.client
+import pythoncom 
 
 class FileScanner:
     def __init__(self):
@@ -49,6 +51,49 @@ class FileScanner:
                     "size": size,
                     "modified": modified,
                     "path": path,
-                })
+                })        
 
         return files
+    
+
+    def scan_file_metadata(self, file_path: str) -> dict:
+        """
+        단일 파일의 메타데이터를 수집하여 딕셔너리로 반환한다.
+
+        Parameters
+        ----------
+        file_path : str
+            메타데이터를 수집할 파일 경로
+
+        Returns
+        -------
+        dict
+            파일 메타데이터 딕셔너리
+            name, ext, size, modified, path 키를 가진다.
+        """
+        stat = os.stat(file_path)
+
+        metadata = self.get_windows_metadata(file_path)
+
+        return metadata
+
+    def get_windows_metadata(self, path):
+        meta = {}
+        pythoncom.CoInitialize() 
+        try:
+            abs_path = os.path.abspath(path)
+            folder_path = os.path.dirname(abs_path)
+            file_name = os.path.basename(abs_path)
+            shell = win32com.client.Dispatch("Shell.Application")
+            folder = shell.Namespace(folder_path)
+            if not folder: return meta
+            item = folder.ParseName(file_name)
+            if not item: return meta
+            for i in range(320): 
+                key = folder.GetDetailsOf(None, i)
+                if not key: continue
+                value = folder.GetDetailsOf(item, i)
+                if value != "": meta[key] = value
+        except: pass
+        finally: pythoncom.CoUninitialize() 
+        return meta

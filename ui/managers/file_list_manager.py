@@ -28,3 +28,9 @@ class FileListManager:
             return f"{size / 1024 ** 2:.1f} MB"
         else:
             return f"{size / 1024 ** 3:.1f} GB"
+        
+    # =========================
+    # 파일 선택 시 메타데이터 로드 요청 (app으로 전달)
+    # =========================
+    def file_selected(self, file_path: str):
+        self.app.load_metadata(file_path)

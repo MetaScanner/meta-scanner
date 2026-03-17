@@ -26,9 +26,11 @@ class FileListFrame:
         self.tree_container.columnconfigure(0, weight=1)
         self.tree_container.rowconfigure(0, weight=1)
         
-        columns = ("name", "type", "size", "modified") 
+        columns = ("name", "type", "size", "modified", "path") 
         self.tree = ttk.Treeview(self.tree_container, columns=columns, show="headings", height=10)
 
+        self.tree["displaycolumns"] = ("name", "type", "size", "modified", "path")
+        
         # 컬럼 정의
         self.tree.heading("name", text="파일명")
         self.tree.heading("type", text="형식")
@@ -60,8 +62,7 @@ class FileListFrame:
         )
 
         self.show_empty_label(True)
-
-        # self.tree.bind("<<TreeviewSelect>>", self._on_tree_select)
+        self.tree.bind("<<TreeviewSelect>>", self._on_tree_select)
 
     def update_list_view(self, files: list):    
         self.show_empty_label(False)
@@ -72,6 +73,7 @@ class FileListFrame:
                 file["ext"],
                 size_str,
                 file["modified"],
+                file["path"]
             ))
 
     def clear_list_view(self):
@@ -83,6 +85,13 @@ class FileListFrame:
             self.empty_label.place(relx=0.5, rely=0.5, anchor="center")
         else:
             self.empty_label.place_forget()
+
+    def _on_tree_select(self, event):
+        selected = self.tree.selection()
+        if selected:
+            item = self.tree.item(selected[0])
+            path = item["values"][4]
+            self.manager.file_selected(path)
 
     # ===========================
     # ScrollManager 인터페이스

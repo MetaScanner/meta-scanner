@@ -28,11 +28,18 @@ class MetaCollector:
 
         self.folder_manager = self.layout.folder_scan_manager
         self.file_list_manager = self.layout.file_list_manager
+        self.metadata_manager = self.layout.metadata_manager
     
     # =========================
     # 폴더 선택 이벤트 중재 (FolderScanManager → app → FileListManager)
     # =========================
     def on_folder_selected(self, folder_path: str):
-
         files = self.scanner.scan_folder(folder_path)
         self.file_list_manager.load_files(files)
+        self.metadata_manager.clear_metadata()
+
+    def load_metadata(self, file_path: str):
+        self.metadata_manager.update_metadata(file_path)
+    
+    def request_collect_metadata(self, file_path: str) -> dict:
+        return self.scanner.scan_file_metadata(file_path)
