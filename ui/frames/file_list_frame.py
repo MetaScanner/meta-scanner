@@ -8,16 +8,16 @@ class FileListFrame:
         self.app = app
         self.frame = ttk.LabelFrame(parent, style="Box.TFrame", padding=(6, 4))
 
-        self.manager = FileListManager(self)
         self._build()
+    
+    def set_manager(self, manager):
+        self.manager = manager
 
     def _build(self):
         self.frame.columnconfigure(0, weight=1)
         self.frame.rowconfigure(0, weight=1)
 
         self._create_list_view()
-
-
 
     def _create_list_view(self):
         self.tree_container = ttk.Frame(self.frame)
@@ -26,9 +26,11 @@ class FileListFrame:
         self.tree_container.columnconfigure(0, weight=1)
         self.tree_container.rowconfigure(0, weight=1)
         
-        columns = ("name", "type", "size", "modified") 
+        columns = ("name", "type", "size", "modified", "path") 
         self.tree = ttk.Treeview(self.tree_container, columns=columns, show="headings", height=10)
 
+        self.tree["displaycolumns"] = ("name", "type", "size", "modified", "path")
+        
         # 컬럼 정의
         self.tree.heading("name", text="파일명")
         self.tree.heading("type", text="형식")
@@ -59,6 +61,51 @@ class FileListFrame:
             font=self.app.font
         )
 
-        self.empty_label.place(relx=0.5, rely=0.5, anchor="center")
+        self.show_empty_label(True)
+        self.tree.bind("<<TreeviewSelect>>", self._on_tree_select)
 
-        # self.tree.bind("<<TreeviewSelect>>", self._on_tree_select)
+    def update_list_view(self, files: list):    
+        self.show_empty_label(False)
+        for file in files:
+            size_str = self.manager._format_size(file["size"])
+            self.tree.insert("", "end", values=(
+                file["name"],
+                file["ext"],
+                size_str,
+                file["modified"],
+                file["path"]
+            ))
+
+    def clear_list_view(self):
+        self.tree.delete(*self.tree.get_children())
+        self.show_empty_label(True)
+
+    def show_empty_label(self, show=True):
+        if show:
+            self.empty_label.place(relx=0.5, rely=0.5, anchor="center")
+        else:
+            self.empty_label.place_forget()
+
+    def _on_tree_select(self, event):
+        selected = self.tree.selection()
+        if selected:
+            item = self.tree.item(selected[0])
+            path = item["values"][4]
+            self.manager.file_selected(path)
+
+    # ===========================
+    # ScrollManager 인터페이스
+    # ===========================
+    def is_inside(self, widget):
+        return self._is_child_of(widget, self.tree_container)
+
+    def scroll(self, event):
+        delta = int(-1 * (event.delta / 120))
+        self.tree.yview_scroll(delta, "units")
+
+    def _is_child_of(self, widget, parent):
+        while widget is not None:
+            if widget == parent:
+                return True
+            widget = widget.master
+        return False
