@@ -17,6 +17,10 @@ from ui.components.scroll_container import ScrollContainer
 from ui.managers.scroll_manager import ScrollManager
 from ui.frames.folder_scan_frame import FolderScanFrame
 from ui.frames.file_list_frame import FileListFrame
+from ui.frames.metadata_frame import MetadataFrame
+from ui.managers.folder_scan_manager import FolderScanManager
+from ui.managers.file_list_manager import FileListManager
+from ui.managers.metadata_manager import MetadataManager
 from ui import styles
 
 class MainLayout:
@@ -28,6 +32,7 @@ class MainLayout:
 
         self._build_scroll_container()
         self._build_frames()
+        self._build_managers()
         self._build_scroll_manager()
 
     # =========================
@@ -49,9 +54,27 @@ class MainLayout:
 
         self.file_list = FileListFrame(self.app, self.page_frame)
         self.file_list.frame.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+
+        self.metadata = MetadataFrame(self.app, self.page_frame)
+        self.metadata.frame.grid(row=2, column=0, sticky="nsew", padx=10, pady=(10, 50))
     
+    # =========================
+    # Manager 생성 및 주입
+    # =========================
+    def _build_managers(self):
+        self.folder_scan_manager = FolderScanManager(self.app, self.folder_scan)
+        self.folder_scan.set_manager(self.folder_scan_manager)
+        
+        self.file_list_manager = FileListManager(self.app, self.file_list)
+        self.file_list.set_manager(self.file_list_manager)
+
+        self.metadata_manager = MetadataManager(self.app, self.metadata)
+        self.metadata.set_manager(self.metadata_manager)
+
     # =========================
     # 내부 스크롤 영역 등록
     # =========================
     def _build_scroll_manager(self):
         self.scroll_manager = ScrollManager(self.root, self.canvas)
+        self.scroll_manager.register(self.file_list)
+        self.scroll_manager.register(self.metadata)

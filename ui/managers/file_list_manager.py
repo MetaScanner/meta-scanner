@@ -1,36 +1,20 @@
-from core.file_scanner import scan_folder
+from tkinter import messagebox
 
 class FileListManager:
-    def __init__(self, frame):
+    def __init__(self, app, frame):
+        self.app = app
         self.frame = frame
         
     # =========================
-    # 파일 목록 로드
-    # app으로부터 폴더 경로를 받아 core에서 파일 목록을 가져온 뒤
-    # frame의 treeview에 표시한다.
+    # 파일 목록 로드 (app으로부터 파일 리스트 전달받아 UI 업데이트)
     # =========================
-    def load_files(self, folder_path: str):
-        files = scan_folder(folder_path)
- 
-        # treeview 초기화
-        tree = self.frame.tree
-        tree.delete(*tree.get_children())
- 
+    def load_files(self, files: list):
+        self.frame.clear_list_view()
         if not files:
-            self.frame.empty_label.place(relx=0.5, rely=0.5, anchor="center")
+            self.frame.show_empty_label(True)
+            messagebox.showinfo("알림", "선택한 폴더에 파일이 없습니다.")
             return
- 
-        # 파일이 있으면 안내 문구 숨기기
-        self.frame.empty_label.place_forget()
- 
-        for file in files:
-            size_str = self._format_size(file["size"])
-            tree.insert("", "end", values=(
-                file["name"],
-                file["ext"],
-                size_str,
-                file["modified"],
-            ))
+        self.frame.update_list_view(files)
  
     # =========================
     # 파일 크기 포맷

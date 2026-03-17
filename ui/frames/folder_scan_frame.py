@@ -15,11 +15,11 @@ class FolderScanFrame:
         self.app = app
         self.frame = ttk.Frame(parent)
 
-        self.manager = FolderScanManager(self)
-
         self._build()
 
-    
+    def set_manager(self, manager):
+        self.manager = manager
+        
     def _build(self):
         self.frame.columnconfigure(0, weight=1)
 

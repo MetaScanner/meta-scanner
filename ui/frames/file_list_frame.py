@@ -8,16 +8,16 @@ class FileListFrame:
         self.app = app
         self.frame = ttk.LabelFrame(parent, style="Box.TFrame", padding=(6, 4))
 
-        self.manager = FileListManager(self)
         self._build()
+    
+    def set_manager(self, manager):
+        self.manager = manager
 
     def _build(self):
         self.frame.columnconfigure(0, weight=1)
         self.frame.rowconfigure(0, weight=1)
 
         self._create_list_view()
-
-
 
     def _create_list_view(self):
         self.tree_container = ttk.Frame(self.frame)
@@ -59,6 +59,44 @@ class FileListFrame:
             font=self.app.font
         )
 
-        self.empty_label.place(relx=0.5, rely=0.5, anchor="center")
+        self.show_empty_label(True)
 
         # self.tree.bind("<<TreeviewSelect>>", self._on_tree_select)
+
+    def update_list_view(self, files: list):    
+        self.show_empty_label(False)
+        for file in files:
+            size_str = self.manager._format_size(file["size"])
+            self.tree.insert("", "end", values=(
+                file["name"],
+                file["ext"],
+                size_str,
+                file["modified"],
+            ))
+
+    def clear_list_view(self):
+        self.tree.delete(*self.tree.get_children())
+        self.show_empty_label(True)
+
+    def show_empty_label(self, show=True):
+        if show:
+            self.empty_label.place(relx=0.5, rely=0.5, anchor="center")
+        else:
+            self.empty_label.place_forget()
+
+    # ===========================
+    # ScrollManager 인터페이스
+    # ===========================
+    def is_inside(self, widget):
+        return self._is_child_of(widget, self.tree_container)
+
+    def scroll(self, event):
+        delta = int(-1 * (event.delta / 120))
+        self.tree.yview_scroll(delta, "units")
+
+    def _is_child_of(self, widget, parent):
+        while widget is not None:
+            if widget == parent:
+                return True
+            widget = widget.master
+        return False

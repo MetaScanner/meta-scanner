@@ -47,6 +47,7 @@ class ScrollManager:
 
             # 아무도 안 받으면 전체 스크롤
             self._scroll_canvas(event)
+            return "break"
         except Exception as e:
             print("ScrollManager error:", e)
 

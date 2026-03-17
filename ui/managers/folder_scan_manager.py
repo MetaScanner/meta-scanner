@@ -12,7 +12,8 @@ Folder Scan Manager
 from tkinter import filedialog
 
 class FolderScanManager:
-    def __init__(self, frame):
+    def __init__(self, app, frame):
+        self.app = app
         self.frame = frame
 
     # =========================
@@ -22,6 +23,6 @@ class FolderScanManager:
         folder = filedialog.askdirectory()
         
         if folder:
-            self.frame.app.on_folder_selected(folder)
+            self.app.on_folder_selected(folder)
  
         return folder

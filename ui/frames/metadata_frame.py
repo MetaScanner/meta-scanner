@@ -8,8 +8,10 @@ class MetadataFrame:
         self.app = app
         self.frame = ttk.LabelFrame(parent, text="Metadata", style="TLabelframe")
 
-        self.manager = MetadataManager(self)
         self._build()
+
+    def set_manager(self, manager):
+        self.manager = manager
 
     def _build(self):
         self.frame.columnconfigure(0, weight=1)
@@ -42,11 +44,8 @@ class MetadataFrame:
                                              indicatoron=False, width=5, padx=5, pady=2, selectcolor=color,  bg="#F0F0F0", activebackground=color, relief="raised")
             rb.pack(side=tk.LEFT, padx=2)
             
-        self.single_file_download_btn = ttk.Button(self.save_frame, text="선택 파일 메타데이터 저장", command=None, style="Primary.TButton")
-        self.single_file_download_btn.pack(side=tk.LEFT, padx=5)
-
-        self.zip_download_btn = ttk.Button(self.save_frame, text="전체 메타데이터 저장", command=None, style="Primary.TButton")
-        self.zip_download_btn.pack(side=tk.LEFT, padx=5)
+        self.single_file_download_btn = ttk.Button(self.save_frame, text="메타데이터 저장", command=None, style="Primary.TButton")
+        self.single_file_download_btn.pack(side=tk.LEFT, padx=10)
 
         self._create_metadata_view()
 
