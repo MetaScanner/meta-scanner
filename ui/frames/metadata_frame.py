@@ -45,7 +45,12 @@ class MetadataFrame:
                                              indicatoron=False, width=5, pady=2, selectcolor=color,  bg="#F0F0F0", activebackground=color, relief="raised")
             rb.pack(side=tk.LEFT, padx=2)
             
-        self.single_file_download_btn = ttk.Button(self.save_frame, text="메타데이터 저장", command=None, style="Primary.TButton")
+        self.single_file_download_btn = ttk.Button(
+            self.save_frame, 
+            text="메타데이터 저장", 
+            command=lambda: self.manager.save_metadata(), 
+            style="Primary.TButton")
+        
         self.single_file_download_btn.pack(side=tk.LEFT, padx=10)
 
         self._create_metadata_view()
@@ -95,6 +100,8 @@ class MetadataFrame:
         for key, value in metadata.items():
             self.tree.insert("", "end", values=(key, value))
         
+    def _on_save_click(self):
+        self.manager.save_metadata()
 
     def clear_metadata_view(self):
         self.tree.delete(*self.tree.get_children())

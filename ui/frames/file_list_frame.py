@@ -6,7 +6,7 @@ from tkinter import ttk
 class FileListFrame:
     def __init__(self, app, parent):
         self.app = app
-        self.frame = ttk.LabelFrame(parent, style="Box.TFrame", padding=(6, 4))
+        self.frame = ttk.LabelFrame(parent, style="BOX.TFrame", padding=(6, 4))
 
         self._build()
     

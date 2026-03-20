@@ -32,10 +32,7 @@ class MetaCollector:
         self.folder_manager = self.layout.folder_scan_manager
         self.file_list_manager = self.layout.file_list_manager
         self.metadata_manager = self.layout.metadata_manager
-    
-    # =========================
-    # 폴더 선택 이벤트 중재 (FolderScanManager → app → FileListManager)
-    # =========================
+        
     def on_folder_selected(self, folder_path: str):
         raw_files = self.window_adapter.get_all_files(folder_path)
         files = self.processor.process_files_data(raw_files)
