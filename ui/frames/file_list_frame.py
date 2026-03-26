@@ -91,7 +91,8 @@ class FileListFrame:
         if selected:
             item = self.tree.item(selected[0])
             path = item["values"][4]
-            self.manager.file_selected(path)
+            name = item["values"][0]
+            self.manager.file_selected(path, name)
 
     # ===========================
     # ScrollManager 인터페이스
