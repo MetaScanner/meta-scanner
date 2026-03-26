@@ -4,6 +4,7 @@ class FileListManager:
     def __init__(self, app, frame):
         self.app = app
         self.frame = frame
+        self.selected_file = None
         
     # =========================
     # 파일 목록 로드 (app으로부터 파일 리스트 전달받아 UI 업데이트)
@@ -32,5 +33,15 @@ class FileListManager:
     # =========================
     # 파일 선택 시 메타데이터 로드 요청 (app으로 전달)
     # =========================
-    def file_selected(self, file_path: str):
+    def file_selected(self, file_path: str, file_name: str):
+        self.selected_file = {
+                                "path": file_path,
+                                "name": file_name
+                            }
         self.app.load_metadata(file_path)
+
+    # =========================
+    # 선택된 파일 조회
+    # =========================
+    def get_selected_file(self):
+        return self.selected_file

@@ -48,7 +48,7 @@ class MetadataFrame:
         self.single_file_download_btn = ttk.Button(
             self.save_frame, 
             text="메타데이터 저장", 
-            command=lambda: self.manager.save_metadata(), 
+            command=self._save_metadata, 
             style="Primary.TButton")
         
         self.single_file_download_btn.pack(side=tk.LEFT, padx=10)
@@ -105,6 +105,13 @@ class MetadataFrame:
 
     def clear_metadata_view(self):
         self.tree.delete(*self.tree.get_children())
+
+    # ===========================
+    # 메타데이터 저장 이벤트 핸들러
+    # ===========================
+    def _save_metadata(self):
+        save_format = self.format_var.get()
+        self.manager.save_metadata(save_format)
 
     # ===========================
     # ScrollManager 인터페이스
