@@ -31,6 +31,9 @@ class MetadataManager:
 
         file_path = self.app.export_metadata(metadata, save_format)
         
+        if not file_path:
+            return
+        
         messagebox.showinfo("완료", f"저장되었습니다.\n{file_path}")
         
     def has_metadata_cache(self, file_path: str) -> bool:
