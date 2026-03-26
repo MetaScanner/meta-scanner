@@ -2,10 +2,6 @@
 폴더 스캔 UI 프레임을 정의하는 모듈
 이 모듈은 폴더 스캔과 관련된 UI 요소를 포함하는 프레임을 정의한다.
 """
-
-from ui import styles
-from ui.managers.folder_scan_manager import FolderScanManager
-
 import tkinter as tk
 from tkinter import ttk
 

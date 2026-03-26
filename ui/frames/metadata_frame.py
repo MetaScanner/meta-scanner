@@ -1,5 +1,3 @@
-from ui.managers.metadata_manager import MetadataManager
-
 import tkinter as tk
 from tkinter import ttk
 

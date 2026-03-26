@@ -17,8 +17,6 @@ from core.file_processor import FileProcessor
 from infra.window_adapter import WindowAdapter
 from infra.exporter import Exporter
 
-import tkinter as tk
-
 class MetaCollector:
     def __init__(self, root):
         self.root = root

@@ -1,6 +1,3 @@
-from ui.managers.file_list_manager import FileListManager
-
-import tkinter as tk
 from tkinter import ttk
 
 class FileListFrame:
