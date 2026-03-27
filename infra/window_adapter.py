@@ -42,6 +42,7 @@ class WindowAdapter:
             키는 메타데이터 이름, 값은 해당 메타데이터 값이다.
         """
         metadata = {}
+        pythoncom.CoInitialize()
         try:
             abs_path = os.path.abspath(file_path)
             folder_path = os.path.dirname(abs_path)
@@ -52,7 +53,7 @@ class WindowAdapter:
             if not folder:
                 return metadata
             
-            item = folder.ParseName(file_name)
+            item = folder.ParseName(str(file_name))
 
             if not item:
                 return metadata
