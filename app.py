@@ -49,3 +49,6 @@ class MetaCollector:
         file_name = self.file_list_manager.get_selected_file().get("name")
         file_path = self.exporter.export_data(metadata, format, file_name)
         return file_path
+    
+    def request_ui_refresh(self):
+        self.root.update_idletasks()

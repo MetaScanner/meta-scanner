@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
+import ui.styles as styles
+
 class MetadataFrame:
     def __init__(self, app, parent):
         self.app = app
@@ -17,20 +19,20 @@ class MetadataFrame:
         self.frame.rowconfigure(1, weight=1)
 
         #메타 데이터 저장 버튼 프레임
-        self.meta_frame = tk.Frame(self.frame)
+        self.meta_frame = tk.Frame(self.frame, bg=styles.BG_COLOR)
         self.meta_frame.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
         self.meta_frame.columnconfigure(0, weight=1)
         self.meta_frame.rowconfigure(1, weight=1)
 
-        self.btn_frame = tk.Frame(self.meta_frame)
+        self.btn_frame = tk.Frame(self.meta_frame, bg=styles.BG_COLOR)
         self.btn_frame.grid(row=0, column=0, sticky="e", padx=5, pady=5)
 
         # 포맷 프레임
-        self.format_frame = tk.Frame(self.btn_frame)
+        self.format_frame = tk.Frame(self.btn_frame, bg=styles.BG_COLOR)
         self.format_frame.pack(side=tk.LEFT, padx=(10, 0))
 
         # 저장 프레임
-        self.save_frame = tk.Frame(self.btn_frame)
+        self.save_frame = tk.Frame(self.btn_frame, bg=styles.BG_COLOR)
         self.save_frame.pack(side=tk.LEFT)
 
 
@@ -65,10 +67,12 @@ class MetadataFrame:
         self.hsb = ttk.Scrollbar(self.tree_container, orient="horizontal")
 
         # 트리뷰 생성
+        self.tree_height = 15
         self.tree = ttk.Treeview(
                     self.tree_container, 
                     columns=("key", "value"), # 컬럼 정의
-                    show="headings", 
+                    show="headings",
+                    height=self.tree_height, 
                     yscrollcommand=self.vsb.set, 
                     xscrollcommand=self.hsb.set, 
                     style="Treeview"
@@ -88,6 +92,13 @@ class MetadataFrame:
         self.vsb.grid(row=0, column=1, sticky="ns")
         self.hsb.grid(row=1, column=0, sticky="ew")
         self.tree.grid(row=0, column=0, sticky="nsew")
+
+        self.resize_bar = tk.Frame(self.tree_container, height=5, cursor="sb_v_double_arrow", bg="#cccccc")
+        self.resize_bar.grid(row=2, column=0, sticky="ew")
+        self.resize_bar.bind("<Button-1>", self._start_resize)
+        self.resize_bar.bind("<B1-Motion>", self._on_resize)
+        self.resize_bar.bind("<Enter>", self._on_hover)
+        self.resize_bar.bind("<Leave>", self._on_leave)
         
 
     def update_metadata_view(self, metadata: dict):
@@ -110,6 +121,32 @@ class MetadataFrame:
     def _save_metadata(self):
         save_format = self.format_var.get()
         self.manager.save_metadata(save_format)
+
+    # ===========================
+    # 트리뷰 크기 조절 이벤트 핸들러
+    # ===========================
+    def _start_resize(self, event):
+        self.resize_bar.config(bg=styles.RESIZE_BAR_HOVER)
+        self.start_y = event.y_root
+        self.start_height = self.tree_height
+
+    def _on_resize(self, event):
+        delta = event.y_root - self.start_y
+
+        row_delta = delta // 20
+
+        new_height = max(3, self.start_height + row_delta)
+
+        self.tree_height = new_height
+        self.tree.config(height=self.tree_height)
+
+        self.manager.request_ui_update()
+
+    def _on_hover(self, event):
+        self.resize_bar.config(bg=styles.RESIZE_BAR_HOVER)
+
+    def _on_leave(self, event):
+        self.resize_bar.config(bg=styles.RESIZE_BAR_NORMAL)
 
     # ===========================
     # ScrollManager 인터페이스

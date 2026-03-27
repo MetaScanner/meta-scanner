@@ -24,7 +24,7 @@ class ScrollContainer:
         self.root.rowconfigure(0, weight=1)
         self.root.columnconfigure(0, weight=1)
 
-        container = ttk.Frame(self.root)
+        container = ttk.Frame(self.root, style="TFrame")
         container.grid(row=0, column=0, sticky="nsew")
         container.rowconfigure(0, weight=1)
         container.columnconfigure(0, weight=1)
@@ -37,7 +37,7 @@ class ScrollContainer:
         self.canvas.grid(row=0, column=0, sticky="nsew")
         scrollbar.grid(row=0, column=1, sticky="ns")
 
-        self.page_frame = ttk.Frame(self.canvas)
+        self.page_frame = ttk.Frame(self.canvas, style="TFrame")
         self.page_frame.columnconfigure(0, weight=1)
 
         self.canvas_window = self.canvas.create_window(

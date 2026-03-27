@@ -7,7 +7,6 @@ Tkinter 기반 GUI 애플리케이션을 시작하며,
 메인 이벤트 루프를 실행한다.
 """
 
-import sys
 import tkinter as tk
 from app import MetaCollector
 

@@ -45,3 +45,9 @@ class FileListManager:
     # =========================
     def get_selected_file(self):
         return self.selected_file
+    
+    # =========================
+    # UI 업데이트 요청
+    # =========================
+    def request_ui_update(self):
+        self.app.request_ui_refresh()
