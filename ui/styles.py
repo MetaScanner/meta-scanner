@@ -18,7 +18,7 @@ SUCCESS_COLOR = "#28A745"
 WARNING_COLOR = "#DC3545"
 INFO_COLOR = "#0D6EFD"
 
-BG_COLOR = "#EEEEEE"
+BG_COLOR = "#DCDAD5"
 CARD_COLOR = "#FFFFFF"
 
 TXT_COLOR = "#212529"
@@ -31,6 +31,9 @@ ACTIVE_BORDER_COLOR = "#2C7BE5"
 
 SELECTED_BG_COLOR = "#2C7BE5"
 SELECTED_FG_COLOR = "#FFFFFF"
+
+RESIZE_BAR_NORMAL = "#cccccc"
+RESIZE_BAR_HOVER = "#368DDF"
 
 # ==============================
 # Style Setup
@@ -69,9 +72,9 @@ def setup_styles(app):
     # ==============================
     # Frame Styles
     # ==============================
-    style.configure("TFrame", borderwidth=0, relief="flat")
-    style.configure("BOX.TFrame", borderwidth=1, relief="solid")
-    style.configure("TLabelframe")
+    style.configure("TFrame", borderwidth=0, relief="flat", background=BG_COLOR)
+    style.configure("BOX.TFrame", borderwidth=1, relief="solid", background=BG_COLOR)
+    style.configure("TLabelframe", bg=BG_COLOR)
     style.configure("TLabelframe.Label", font=app.label_font)
 
 
@@ -94,7 +97,7 @@ def setup_styles(app):
     style.configure("Treeview", font=app.font, background="white", fieldbackground="white", rowheight=25)
     style.map("Treeview", background=[("selected", "#DCEBFF")], foreground=[("selected", "black")])
     style.configure("Treeview.Heading", font=("맑은 고딕", 12, "bold"), background="#ffffff", borderwidth=0, relief="flat")
-    style.map("Treeview.Heading", background=[("active", "#DADADA")])
+    style.map("Treeview.Heading", background=[("active", "#E6E6E6")])
 
     # ==============================
     # Combobox Styles

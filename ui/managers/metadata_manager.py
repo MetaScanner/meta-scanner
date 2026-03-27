@@ -38,3 +38,9 @@ class MetadataManager:
         
     def has_metadata_cache(self, file_path: str) -> bool:
         return file_path in self.metadata_cache
+    
+    # =========================
+    # UI 업데이트 요청
+    # =========================
+    def request_ui_update(self):
+        self.app.request_ui_refresh()

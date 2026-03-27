@@ -1,4 +1,7 @@
 from tkinter import ttk
+import tkinter as tk
+
+import ui.styles as styles
 
 class FileListFrame:
     def __init__(self, app, parent):
@@ -24,9 +27,10 @@ class FileListFrame:
         self.tree_container.rowconfigure(0, weight=1)
         
         columns = ("name", "type", "size", "modified", "path") 
-        self.tree = ttk.Treeview(self.tree_container, columns=columns, show="headings", height=10)
+        self.tree_height = 10
+        self.tree = ttk.Treeview(self.tree_container, columns=columns, show="headings", height=self.tree_height)
 
-        self.tree["displaycolumns"] = ("name", "type", "size", "modified", "path")
+        self.tree["displaycolumns"] = ("name", "type", "size", "modified")
         
         # 컬럼 정의
         self.tree.heading("name", text="파일명")
@@ -47,6 +51,13 @@ class FileListFrame:
         self.tree.grid(row=0, column=0, sticky="nsew")
         vsb.grid(row=0, column=1, sticky="ns")
         hsb.grid(row=1, column=0, sticky="ew")
+
+        self.resize_bar = tk.Frame(self.tree_container, height=5, cursor="sb_v_double_arrow", bg="#cccccc")
+        self.resize_bar.grid(row=2, column=0, sticky="ew")
+        self.resize_bar.bind("<Button-1>", self._start_resize)
+        self.resize_bar.bind("<B1-Motion>", self._on_resize)
+        self.resize_bar.bind("<Enter>", self._on_hover)
+        self.resize_bar.bind("<Leave>", self._on_leave)
 
         self.empty_label = ttk.Label(
             self.tree_container,
@@ -90,6 +101,33 @@ class FileListFrame:
             path = item["values"][4]
             name = item["values"][0]
             self.manager.file_selected(path, name)
+
+
+    # ===========================
+    # 트리뷰 크기 조절 이벤트 핸들러
+    # ===========================
+    def _start_resize(self, event):
+        self.resize_bar.config(bg=styles.RESIZE_BAR_HOVER)
+        self.start_y = event.y_root
+        self.start_height = self.tree_height
+
+    def _on_resize(self, event):
+        delta = event.y_root - self.start_y
+
+        row_delta = delta // 20
+
+        new_height = max(3, self.start_height + row_delta)
+
+        self.tree_height = new_height
+        self.tree.config(height=self.tree_height)
+
+        self.manager.request_ui_update()
+
+    def _on_hover(self, event):
+        self.resize_bar.config(bg=styles.RESIZE_BAR_HOVER)
+
+    def _on_leave(self, event):
+        self.resize_bar.config(bg=styles.RESIZE_BAR_NORMAL)
 
     # ===========================
     # ScrollManager 인터페이스
